@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIL Image Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_FrjC-jzCXpXuoxEF7ynnj_uahadzt-G_Kw&usqp=CAU');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            visibility: visible;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .top-container button {
+            margin: 5px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            background-color: purple;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .top-container button:hover {
+            background-color: #45a049;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin-top: 80px;
+        }
+
+        .left-container,
+        .right-container {
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .image-operation-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-operation-container h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .left-container img {
+            max-width: 100%;
+            display: block;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .slider-container {
+            margin-top: 20px;
+        }
+
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .slider-container input[type="range"] {
+            width: 100%;
+        }
+
+        .button {
+            display: block;
+            padding: 14px 24px;
+            background-color: #006400;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .footer-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 10px;
+            width: 200px;
+        }
+
+        .footer button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: purple;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            animation: scaleIn 0.5s ease forwards;
+        }
+
+        .footer button:hover {
+            background-color: #45a049;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Page 1 with image processing and operation containers -->
+    <div class="scrollable-page">
+        <!-- Top container for Contact and About buttons -->
+        <div class="top-container">
+            <div class="left-side-buttons">
+                <button style="background-color: rgba(0, 0, 0, 0.8);" onclick="location.href='/contact';">Contact</button>
+                <button style="background-color: rgba(0, 0, 0, 0.8);" onclick="location.href='/about';">About</button>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="left-container">
+                <div class="image-operation-container">
+                    <h1>Image Processing</h1>
+                    <div class="image-container">
+                        <img id="processed-image" src="" alt="Processed Image">
+                    </div>
+                </div>
+            </div>
+            <div class="right-container">
+                <div class="image-operation-container operation-container">
+                    <h1>Upload Image</h1>
+                    <form id="upload-form" action="/" method="post" enctype="multipart/form-data">
+                        <input type="file" id="image-upload" name="image" accept="image/*" required>
+                    </form>
+                    <div class="slider-container">
+                        <!-- Your existing slider inputs -->
+                        <label for="brightness-slider">Brightness:</label>
+                        <input type="range" min="0" max="200" value="100" class="slider" id="brightness-slider">
+                        <br><br>
+                        <label for="blur-slider">Blur:</label>
+                        <input type="range" min="0" max="10" value="0" class="slider" id="blur-slider">
+                        <br><br>
+                        <label for="rotation-slider">Rotation:</label>
+                        <input type="range" min="0" max="360" value="0" class="slider" id="rotation-slider">
+                        <br><br>
+                        <label for="crop-slider">Crop:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="crop-slider">
+                        <br><br>
+                        <label for="vintage-slider">Vintage:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="vintage-slider">
+                        <br><br>
+                        <label for="saturation-slider">Saturation:</label>
+                        <br><br>
+                        <input type="range" min="0" max="200" value="100" class="slider" id="saturation-slider">
+                        <br><br>
+                        <label for="cool-slider">Cool:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="cool-slider">
+                        <br><br>
+                        <label for="fresh-slider">Fresh:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="fresh-slider">
+                        <br><br>
+                        <label for="clear-slider">Clear:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="clear-slider">
+                        <br><br>
+                        <label for="mist-slider">Mist:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="mist-slider">
+                        <br><br>
+                        <label for="city-slider">City:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="city-slider">
+                        <br><br>
+                        <label for="country-slider">Country:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="country-slider">
+                        <br><br>
+                        <label for="forest-slider">Forest:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="forest-slider">
+                        <br><br>
+                        <label for="exposure-slider">Exposure:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="exposure-slider">
+                        <br><br>
+                        <label for="gray-slider">Gray:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="gray-slider">
+                        <br><br>
+                        <label for="grayscale-slider">Grayscale:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="grayscale-slider">
+                        <br><br>
+                        <label for="colors-slider">Colors:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="colors-slider">
+                        <br><br>
+                        <label for="shadow-slider">Shadow:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="shadow-slider">
+                        <br><br>
+                        <label for="sharpness-slider">Sharpness:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="sharpness-slider">
+                        <br><br>
+                        <label for="contrast-slider">Contrast:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="contrast-slider">
+                    </div>
+                    <button class="button" id="process-download-button">Download Processed Image</button>
+                    <button class="button" onclick="location.href='/More_Feature';">HOME_PAGE</button>
+                </div>
+            </div>
+        </div>
+
+    <script>
+    // Define constants for slider elements and the processed image element
+    const brightnessSlider = document.getElementById('brightness-slider');
+    const blurSlider = document.getElementById('blur-slider');
+    const rotationSlider = document.getElementById('rotation-slider');
+    const cropSlider = document.getElementById('crop-slider');
+    const vintageSlider = document.getElementById('vintage-slider');
+    const saturationSlider = document.getElementById('saturation-slider');
+    const coolSlider = document.getElementById('cool-slider');
+    const freshSlider = document.getElementById('fresh-slider');
+    const clearSlider = document.getElementById('clear-slider');
+    const mistSlider = document.getElementById('mist-slider');
+    const citySlider = document.getElementById('city-slider');
+    const countrySlider = document.getElementById('country-slider');
+    const forestSlider = document.getElementById('forest-slider');
+    const exposureSlider = document.getElementById('exposure-slider');
+    const graySlider = document.getElementById('gray-slider');
+    const grayscaleSlider = document.getElementById('grayscale-slider');
+    const colorsSlider = document.getElementById('colors-slider');
+    const shadowSlider = document.getElementById('shadow-slider');
+    const sharpnessSlider = document.getElementById('sharpness-slider');
+    const contrastSlider = document.getElementById('contrast-slider');
+    const processedImage = document.getElementById('processed-image');
+    const imageUpload = document.getElementById('image-upload');
+
+    // Function to update the processed image based on slider values
+    // Function to update the processed image based on slider values
+const updateImage = () => {
+    // Retrieve slider values
+    // Retrieve slider values
+    const brightnessValue = brightnessSlider.value;
+    const blurValue = blurSlider.value;
+    const rotationValue = rotationSlider.value;
+    const cropValue = cropSlider.value;
+    const vintageValue = vintageSlider.value;
+    const saturationValue = saturationSlider.value;
+    const coolValue = coolSlider.value;
+    const freshValue = freshSlider.value;
+    const clearValue = clearSlider.value;
+    const mistValue = mistSlider.value;
+    const cityValue = citySlider.value;
+    const countryValue = countrySlider.value;
+    const forestValue = forestSlider.value;
+    const exposureValue = exposureSlider.value;
+    const grayValue = graySlider.value;
+    const grayscaleValue = grayscaleSlider.value;
+    const colorsValue = colorsSlider.value;
+    const shadowValue = shadowSlider.value;
+    const sharpnessValue = sharpnessSlider.value;
+    const contrastValue = contrastSlider.value;    
+    // Construct the filter style with all adjustments
+
+    const filterStyle = `brightness(${brightnessValue}%) blur(${blurValue}px) saturate(${saturationValue}%) sepia(${vintageValue}%)`;
+            processedImage.style.filter = filterStyle;
+            processedImage.style.transform = `rotate(${rotationValue}deg)`;
+            processedImage.style.transform = `hue-rotate(${coolValue}deg)`;
+            processedImage.style.transform = `saturate(${freshValue})%`;
+            processedImage.style.transform = `brightness(${clearValue}%)`;
+            processedImage.style.transform = `blur(${mistValue}px)`;
+            processedImage.style.transform = `brightness(${cityValue}%)`;
+            processedImage.style.transform = `brightness(${countryValue}%)`;
+            processedImage.style.transform = `brightness(${forestValue}%)`;
+            processedImage.style.transform = `hue-rotate(${exposureValue}deg)            `;
+            processedImage.style.transform = `brightness(${grayValue}%)`;
+            processedImage.style.transform = `grayscale(${grayscaleValue}%)`;
+            processedImage.style.transform = `saturate(${colorsValue}%)`;
+            processedImage.style.transform = `opacity(${shadowValue})`;
+            processedImage.style.transform = ` brightness(${sharpnessValue}%)`;
+            processedImage.style.transform = `constant(${contrastValue}%)`;
+            processedImage.style.clipPath = `inset(${cropValue}% ${cropValue}% ${cropValue}% ${cropValue}%)`;
+
+        };
+
+    // Add event listeners to sliders
+    brightnessSlider.addEventListener('input', updateImage);
+    blurSlider.addEventListener('input', updateImage);
+    rotationSlider.addEventListener('input', updateImage);
+    cropSlider.addEventListener('input', updateImage);
+    vintageSlider.addEventListener('input', updateImage);
+    saturationSlider.addEventListener('input', updateImage);
+    coolSlider.addEventListener('input', updateImage);
+    freshSlider.addEventListener('input', updateImage);
+    clearSlider.addEventListener('input', updateImage);
+    mistSlider.addEventListener('input', updateImage);
+    citySlider.addEventListener('input', updateImage);
+    countrySlider.addEventListener('input', updateImage);
+    forestSlider.addEventListener('input', updateImage);
+    exposureSlider.addEventListener('input', updateImage);
+    graySlider.addEventListener('input', updateImage);
+    grayscaleSlider.addEventListener('input', updateImage);
+    colorsSlider.addEventListener('input', updateImage);
+    shadowSlider.addEventListener('input', updateImage); // Added missing event listener
+    sharpnessSlider.addEventListener('input', updateImage);
+    contrastSlider.addEventListener('input', updateImage);
+
+
+    // Call updateImage initially to apply default settings
+    updateImage();
+    // Function to update uploaded image
+    const updateUploadedImage = () => {
+        const uploadedImage = imageUpload.files[0];
+        if (uploadedImage) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                processedImage.src = e.target.result;
+            };
+            reader.readAsDataURL(uploadedImage);
+        }
+    };
+
+    imageUpload.addEventListener('change', updateUploadedImage);
+
+    // Function to download processed image
+    function downloadProcessedImage() {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const processedImageEl = document.getElementById('processed-image');
+
+        canvas.width = processedImageEl.width;
+        canvas.height = processedImageEl.height;
+        context.filter = processedImageEl.style.filter;
+
+        // Draw the rotated and cropped image on the canvas
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate(rotationSlider.value * Math.PI / 180);
+        context.drawImage(processedImageEl, -canvas.width / 2, -canvas.height / 2);
+        
+        // Download the processed image
+        const downloadLink = document.createElement('a');
+        downloadLink.href = canvas.toDataURL('image/jpeg');
+        downloadLink.download = 'processed_image.jpg';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+
+    // Function to handle image processing and download
+    function processAndDownloadImage() {
+        updateImage(); // Update the processed image
+        setTimeout(downloadProcessedImage, 500); // Download the processed image with a slight delay
+    }
+
+    // Add event listener to a button to trigger image processing and download
+    document.getElementById('process-download-button').addEventListener('click', processAndDownloadImage);
+
+</script>
+
+</body>
+</html>

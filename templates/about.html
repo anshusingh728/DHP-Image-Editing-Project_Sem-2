@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/premium-photo/purple-light-with-black-abstract-effect-background-desktop-wallpaper_528914-3514.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .headline {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 20px; /* Adjusted margin */
+            position: absolute; /* Added position */
+            top: 20px; /* Added top positioning */
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            border: 2px solid black;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-align: justify;
+        }
+
+        /* Added footer styles */
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .footer button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .footer button:hover {
+            background-color: #45a049;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px; /* Increased padding for larger button */
+            background-color: #006400; /* Dark green color */
+            color: #fff; /* Text color */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            cursor: pointer; /* Add cursor pointer on hover */
+            border: none; /* Remove button border */
+        }
+    
+        .button:hover {
+            background-color: #004040; /* Darker shade on hover */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="headline">
+        <h2>Welcome to our About page</h2>
+    </div>
+    <div class="container">
+        <h1 style="color:purple">About My Website</h1>
+    <p> Welcome to our image editing website! Our platform is designed to make photo editing easy and fun. Whether you're a professional photographer or just someone who enjoys taking pictures, our intuitive tools allow you to enhance and transform your images with ease.
+
+        We offer a variety of editing features, including brightness adjustment, blur effects, rotation, cropping, vintage filters, and saturation control. With these tools, you can make your photos look their best and unleash your creativity.
+            
+        Every image has a story to tell, and we believe in giving you the tools to tell that story your way. Whether you're editing portraits, landscapes, or abstract compositions, our platform provides the flexibility and precision you need to achieve your desired results.
+            
+        Join our community and explore the world of visual storytelling. Start editing today and discover the endless possibilities of digital image manipulation!
+
+        </p>
+        <button onclick="location.href='/';" class="button">Start image editing</button>
+
+    </div>
+
+    <!-- Footer with buttons -->
+    <div class="footer">
+        <h1>Click On Button ! To know about Features</h1>
+        <button onclick="location.href='/contact';">Contact</button>
+        <button onclick="location.href='/brightness';">Brightness</button>
+        <button onclick="location.href='/blur';">Blur</button>
+        <button onclick="location.href='/rotation';">Rotation</button>
+        <button onclick="location.href='/crop';">Crop</button>
+        <button onclick="location.href='/vintage';">Vintage</button>
+        <button onclick="location.href='/saturation';">Saturation</button>
+    </div>
+</body>
+</html>

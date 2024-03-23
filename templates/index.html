@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIL Image Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://wallpapers.com/images/hd/light-color-background-u5ajon1xr9puabyq.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            visibility: visible;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin-top: 80px;
+        }
+
+        .left-container,
+        .right-container {
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .image-operation-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-operation-container h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .left-container img {
+            max-width: 100%;
+            display: block;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin: 0 auto; /* Centering the input */
+        }
+
+        .scrollable-page {
+            height: 100vh;
+            overflow-y: scroll;
+            padding: 20px; /* Added padding for better visibility */
+        }
+
+        .image-operation-container {
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column; /* Vertical alignment */
+        }
+
+        .footer-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 10px; /* Added margin */
+            width: 200px; /* Increased container width */
+        }
+
+        .footer button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: purple;
+            color: white;
+            cursor: pointer;
+            width: 100%; /* Button width to fill container */
+        }
+
+        .footer button:hover {
+            background-color: #45a049;
+        }
+
+
+    .footer h1 {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .top-container button {
+        margin: 5px;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 10px;
+        background-color: purple;
+        color: white;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    .top-container button:hover {
+        background-color: #45a049;
+    }
+    .button {
+        display: block;
+        padding: 14px 24px;
+        background-color:#006400 ;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px 0;
+        text-align: center;
+        
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('https://wallpapers.com/images/hd/light-color-background-u5ajon1xr9puabyq.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Keyframe animation for top container */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .top-container {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        visibility: visible;
+        animation: fadeInUp 0.5s ease forwards; /* Apply animation */
+    }
+
+    /* Keyframe animation for footer buttons */
+    @keyframes scaleIn {
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+
+    .footer button {
+        margin: 5px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: purple;
+        color: white;
+        cursor: pointer;
+        width: 100%; /* Button width to fill container */
+        animation: scaleIn 0.5s ease forwards; /* Apply animation */
+    }
+ </style>
+</head>
+<body>
+    <!-- Page 1 with image processing and operation containers -->
+    <div class="scrollable-page">
+        <!-- Top container for Contact and About buttons -->
+        <div class="top-container">
+            <div class="left-side-buttons">
+                <button style="background-color: rgba(0, 0, 0, 0.8);" onclick="location.href='/contact';">Contact</button>
+                <button style="background-color: rgba(0, 0, 0, 0.8);" onclick="location.href='/about';">About</button>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="left-container">
+                <div class="image-operation-container">
+                    <h1>Image Processing</h1>
+                    <div class="image-container">
+                        <img id="processed-image" src="" alt="Processed Image">
+                    </div>
+                </div>
+            </div>
+            <div class="right-container">
+                <div class="image-operation-container operation-container">
+                    <h1>Upload Image</h1>
+                    <form id="upload-form" action="/" method="post" enctype="multipart/form-data">
+                        <input type="file" id="image-upload" name="image" accept="image/*" required>
+                    </form>
+                    <div class="slider-container">
+                        <!-- Your existing slider inputs -->
+                        <label for="brightness-slider">Brightness:</label>
+                        <input type="range" min="0" max="200" value="100" class="slider" id="brightness-slider">
+                        <br><br>
+                        <label for="blur-slider">Blur:</label>
+                        <input type="range" min="0" max="10" value="0" class="slider" id="blur-slider">
+                        <br><br>
+                        <label for="rotation-slider">Rotation:</label>
+                        <input type="range" min="0" max="360" value="0" class="slider" id="rotation-slider">
+                        <br><br>
+                        <label for="crop-slider">Crop:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="crop-slider">
+                        <br><br>
+                        <label for="vintage-slider">Vintage:</label>
+                        <input type="range" min="0" max="100" value="0" class="slider" id="vintage-slider">
+                        <br><br>
+                        <label for="saturation-slider">Saturation:</label>
+                        <br><br>
+                        <input type="range" min="0" max="200" value="100" class="slider" id="saturation-slider">
+                    </div>
+                    <button class="button" id="process-download-button">Download Processed Image</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 2 with only footer buttons -->
+    <div class="scrollable-page">
+        <!-- Footer buttons inside separate square containers -->
+            <div class="footer">
+            <h1 style="color:red">click here ! to know about Features</h1>
+            <div class="footer-container">
+                <button onclick="location.href='/brightness';">Brightness</button>
+            </div>
+            <div class="footer-container">
+                <button onclick="location.href='/blur';">Blur</button>
+            </div>
+            <div class="footer-container">
+                <button onclick="location.href='/rotation';">Rotation</button>
+            </div>
+            <div class="footer-container">
+                <button onclick="location.href='/crop';">Crop</button>
+            </div>
+            <div class="footer-container">
+                <button onclick="location.href='/vintage';">Vintage</button>
+            </div>
+            <div class="footer-container">
+                <button onclick="location.href='/saturation';">Saturation</button>
+            </div>
+            <div class="footer-container">
+                <button style="background-color: blue" onclick="location.href='/More_Feature';">Explore-More_Feature</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // JavaScript and other scripts
+            const brightnessSlider = document.getElementById('brightness-slider');
+            const blurSlider = document.getElementById('blur-slider');
+            const rotationSlider = document.getElementById('rotation-slider');
+            const cropSlider = document.getElementById('crop-slider');
+            const vintageSlider = document.getElementById('vintage-slider');
+            const saturationSlider = document.getElementById('saturation-slider');
+            const processedImage = document.getElementById('processed-image');
+        
+            const updateImage = () => {
+                const brightnessValue = brightnessSlider.value;
+                const blurValue = blurSlider.value;
+                const rotationValue = rotationSlider.value;
+                const cropValue = cropSlider.value;
+                const saturationValue = saturationSlider.value;
+                const vintageValue = vintageSlider.value;
+            
+                // Update image style
+                processedImage.style.filter = `brightness(${brightnessValue}%) blur(${blurValue}px) saturate(${saturationValue}%) sepia(${vintageValue}%)`;
+                processedImage.style.transform = `rotate(${rotationValue}deg)`;
+                processedImage.style.clipPath = `inset(${cropValue}% ${cropValue}% ${cropValue}% ${cropValue}%)`;
+            };        
+        
+            // Add event listeners to sliders
+            brightnessSlider.addEventListener('input', updateImage);
+            blurSlider.addEventListener('input', updateImage);
+            rotationSlider.addEventListener('input', updateImage);
+            cropSlider.addEventListener('input', updateImage);
+            vintageSlider.addEventListener('input', updateImage);
+            saturationSlider.addEventListener('input', updateImage);
+        
+            // Trigger initial update
+            updateImage();
+        
+            // Function to update uploaded image
+            const updateUploadedImage = () => {
+                const uploadedImage = document.getElementById('image-upload').files[0];
+                const reader = new FileReader();
+        
+                reader.onload = function (e) {
+                    processedImage.src = e.target.result;
+                    // Reset filters
+                    brightnessSlider.value = 100;
+                    blurSlider.value = 0;
+                    rotationSlider.value = 0;
+                    cropSlider.value = 0;
+                    saturationSlider.value = 100;
+                    vintageSlider.value = 0;
+                    updateImage(); // Update image with default settings
+                };
+        
+                reader.readAsDataURL(uploadedImage);
+            };
+        
+            // Add event listener to input file
+            document.getElementById('image-upload').addEventListener('change', updateUploadedImage);
+    
+            // Function to download processed image
+            function downloadProcessedImage() {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                const processedImageEl = document.getElementById('processed-image');
+    
+                canvas.width = processedImageEl.width;
+                canvas.height = processedImageEl.height;
+                context.filter = processedImageEl.style.filter;
+    
+                // Draw the rotated and cropped image on the canvas
+                context.translate(canvas.width / 2, canvas.height / 2);
+                context.rotate(rotationSlider.value * Math.PI / 180);
+                context.drawImage(processedImageEl, -canvas.width / 2, -canvas.height / 2);
+                
+                // Download the processed image
+                const downloadLink = document.createElement('a');
+                downloadLink.href = canvas.toDataURL('image/jpeg');
+                downloadLink.download = 'processed_image.jpg';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            }
+    
+            // Function to handle image processing and download
+            function processAndDownloadImage() {
+                updateImage(); // Update the processed image
+                setTimeout(downloadProcessedImage, 500); // Download the processed image with a slight delay
+            }
+    
+            // Add event listener to a button to trigger image processing and download
+            document.getElementById('process-download-button').addEventListener('click', processAndDownloadImage);
+        </script>
+</body>
+</html>
+
