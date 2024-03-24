@@ -24,8 +24,7 @@ def process_image(image, operations):
         enhancer = ImageEnhance.Color(pil_image)
         pil_image = enhancer.enhance(1.5)  # Adjust saturation factor as needed
     if 'vintage' in operations:
-        # Apply vintage effect (example)
-        # You can implement your vintage effect or use a library like PillowFX
+        # Apply vintage effect 
         pass
 
     # Convert PIL Image back to numpy array for OpenCV compatibility
@@ -114,6 +113,8 @@ def More_Feature():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
 
 
         
