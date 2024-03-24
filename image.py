@@ -12,7 +12,7 @@ def process_image(image, operations):
 
     # Apply operations based on the selected features
     if 'blur' in operations:
-        pil_image = pil_image.filter(ImageFilter.BLUR)
+        pil_image = pil_image.filter(ImageFilter.BLUR)  # Apply blur filter
     if 'brightness' in operations:
         enhancer = ImageEnhance.Brightness(pil_image)
         pil_image = enhancer.enhance(1.5)  # Adjust brightness factor as needed
@@ -24,11 +24,10 @@ def process_image(image, operations):
         enhancer = ImageEnhance.Color(pil_image)
         pil_image = enhancer.enhance(1.5)  # Adjust saturation factor as needed
     if 'vintage' in operations:
-        # Apply vintage effect 
-        pass
+        # Apply vintage effect (You can add code here to apply the vintage effect)
 
     # Convert PIL Image back to numpy array for OpenCV compatibility
-    image = np.array(pil_image)
+        image = np.array(pil_image)
 
     return image
 
@@ -53,19 +52,12 @@ def index():
 
     return render_template('index.html')
 
-# Other routes and functions remain the same
-
+# Define routes for other pages
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        whatsapp = request.form['whatsapp']
-        message = request.form['message']
-
-        # Process form submission here, for example, send email
-        # Redirect to success page after processing the form
-        return redirect(url_for('success'))
+        # Process form submission
+        return redirect(url_for('success'))  # Redirect to success page
 
     return render_template('contact.html')
 
@@ -84,7 +76,6 @@ def brightness():
 @app.route('/blur')
 def blur():
     return render_template('blur.html')
-
 
 @app.route('/rotation')
 def rotation():
@@ -110,9 +101,10 @@ def edit():
 def More_Feature():
     return render_template('More_Features.html')
 
-
+# Run the app if executed directly
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
