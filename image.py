@@ -1,19 +1,39 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
-import cv2
-import numpy as np
+from PIL import Image, ImageEnhance, ImageFilter  # Import necessary modules
 import io
+import numpy as np
+import cv2
 
 app = Flask(__name__)
 
+# Define image processing function using PIL
 def process_image(image, operations):
-    # Apply operations to the image
-    # Example operations:
+    pil_image = Image.fromarray(image)  # Convert numpy array to PIL Image
+
+    # Apply operations based on the selected features
     if 'blur' in operations:
-        image = cv2.GaussianBlur(image, (5, 5), 0)
+        pil_image = pil_image.filter(ImageFilter.BLUR)
     if 'brightness' in operations:
-        image = cv2.convertScaleAbs(image, alpha=1.5, beta=50)
+        enhancer = ImageEnhance.Brightness(pil_image)
+        pil_image = enhancer.enhance(1.5)  # Adjust brightness factor as needed
+    if 'rotation' in operations:
+        pil_image = pil_image.rotate(45)  # Adjust rotation angle as needed
+    if 'crop' in operations:
+        pil_image = pil_image.crop((100, 100, 300, 300))  # Adjust crop coordinates as needed
+    if 'saturation' in operations:
+        enhancer = ImageEnhance.Color(pil_image)
+        pil_image = enhancer.enhance(1.5)  # Adjust saturation factor as needed
+    if 'vintage' in operations:
+        # Apply vintage effect (example)
+        # You can implement your vintage effect or use a library like PillowFX
+        pass
+
+    # Convert PIL Image back to numpy array for OpenCV compatibility
+    image = np.array(pil_image)
+
     return image
 
+# Flask route for the index page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST' and 'image' in request.files:
@@ -21,20 +41,16 @@ def index():
         nparr = np.fromstring(image_file.read(), np.uint8)
         image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-        # Perform image processing
-        operations = ['blur', 'brightness']
+        # Perform image processing based on selected features
+        operations = ['blur', 'brightness', 'rotation', 'crop', 'saturation', 'vintage']
         processed_image = process_image(image, operations)
 
-        # Convert processed image to bytes for download
+        # Convert processed image to bytes for display and download
         _, buffer = cv2.imencode('.jpg', processed_image)
         buffer_io = io.BytesIO(buffer)
         buffer_io.seek(0)
 
-        # Convert original image to bytes for displaying in HTML
-        _, original_buffer = cv2.imencode('.jpg', image)
-        original_image_data = original_buffer.tobytes()
-
-        return render_template('index.html', image_data=original_image_data, processed_image_data=buffer_io.getvalue())
+        return render_template('index.html', processed_image_data=buffer_io.getvalue())
 
     return render_template('index.html')
 
@@ -98,4 +114,10 @@ def More_Feature():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+        
+        
+
+    
 
