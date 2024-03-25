@@ -272,47 +272,48 @@
     </div>
     <script>
         // JavaScript and other scripts
-            const brightnessSlider = document.getElementById('brightness-slider');
-            const blurSlider = document.getElementById('blur-slider');
-            const rotationSlider = document.getElementById('rotation-slider');
-            const cropSlider = document.getElementById('crop-slider');
-            const vintageSlider = document.getElementById('vintage-slider');
-            const saturationSlider = document.getElementById('saturation-slider');
-            const processedImage = document.getElementById('processed-image');
+            const brightnessSlider = document.getElementById('brightness-slider');// Get the brightness slider element
+            const blurSlider = document.getElementById('blur-slider'); // Get the blur slider element
+            const rotationSlider = document.getElementById('rotation-slider'); // Get the rotation slider element
+            const cropSlider = document.getElementById('crop-slider');  // Get the crop slider element
+            const vintageSlider = document.getElementById('vintage-slider'); // Get the vintage slider element
+            const saturationSlider = document.getElementById('saturation-slider'); // Get the saturation slider element
+            const processedImage = document.getElementById('processed-image'); // Get the processed image element
         
-            const updateImage = () => {
-                const brightnessValue = brightnessSlider.value;
-                const blurValue = blurSlider.value;
-                const rotationValue = rotationSlider.value;
-                const cropValue = cropSlider.value;
-                const saturationValue = saturationSlider.value;
-                const vintageValue = vintageSlider.value;
+            const updateImage = () => {  // Define a function to update the processed image
+                const brightnessValue = brightnessSlider.value; // Get the value of the brightness slider
+                const blurValue = blurSlider.value; // Get the value of the blur slider
+                const rotationValue = rotationSlider.value; // Get the value of the rotation slider
+                const cropValue = cropSlider.value; // Get the value of the crop slider
+                const saturationValue = saturationSlider.value; // Get the value of the saturation slider
+                const vintageValue = vintageSlider.value; // Get the value of the vintage slider
             
-                // Update image style
+                // Update image style based on slider values
                 processedImage.style.filter = `brightness(${brightnessValue}%) blur(${blurValue}px) saturate(${saturationValue}%) sepia(${vintageValue}%)`;
                 processedImage.style.transform = `rotate(${rotationValue}deg)`;
                 processedImage.style.clipPath = `inset(${cropValue}% ${cropValue}% ${cropValue}% ${cropValue}%)`;
             };        
         
             // Add event listeners to sliders
-            brightnessSlider.addEventListener('input', updateImage);
-            blurSlider.addEventListener('input', updateImage);
-            rotationSlider.addEventListener('input', updateImage);
-            cropSlider.addEventListener('input', updateImage);
-            vintageSlider.addEventListener('input', updateImage);
-            saturationSlider.addEventListener('input', updateImage);
+            brightnessSlider.addEventListener('input', updateImage); // Add event listener for the brightness slider input
+            blurSlider.addEventListener('input', updateImage); // Add event listener for the blur slider input
+            rotationSlider.addEventListener('input', updateImage); // Add event listener for the rotation slider input
+            cropSlider.addEventListener('input', updateImage); // Add event listener for the crop slider input
+            vintageSlider.addEventListener('input', updateImage); // Add event listener for the vintage slider input
+            saturationSlider.addEventListener('input', updateImage); // Add event listener for the saturation slider input
         
             // Trigger initial update
             updateImage();
         
             // Function to update uploaded image
-            const updateUploadedImage = () => {
-                const uploadedImage = document.getElementById('image-upload').files[0];
-                const reader = new FileReader();
+            const updateUploadedImage = () => { 
+                const uploadedImage = document.getElementById('image-upload').files[0]; // Get the uploaded image file
+                const reader = new FileReader(); // Create a new file reader
         
-                reader.onload = function (e) {
-                    processedImage.src = e.target.result;
-                    // Reset filters
+                reader.onload = function (e) { // Define onload event for the reader
+                    processedImage.src = e.target.result; //Set the processed image source to the uploaded image
+                    
+                    // Reset filters to default values
                     brightnessSlider.value = 100;
                     blurSlider.value = 0;
                     rotationSlider.value = 0;
@@ -322,7 +323,7 @@
                     updateImage(); // Update image with default settings
                 };
         
-                reader.readAsDataURL(uploadedImage);
+                reader.readAsDataURL(uploadedImage); // Read the uploaded image file
             };
         
             // Add event listener to input file
@@ -330,13 +331,13 @@
     
             // Function to download processed image
             function downloadProcessedImage() {
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
+                const canvas = document.createElement('canvas'); //Create a new canvas element
+                const context = canvas.getContext('2d'); // Get 2D context for the canvas
                 const processedImageEl = document.getElementById('processed-image');
-    
-                canvas.width = processedImageEl.width;
-                canvas.height = processedImageEl.height;
-                context.filter = processedImageEl.style.filter;
+
+                canvas.width = processedImageEl.width; // Set canvas width to processed image width
+                canvas.height = processedImageEl.height; // Set canvas height to processed image height
+                context.filter = processedImageEl.style.filter; // Apply image filter to canvas context
     
                 // Draw the rotated and cropped image on the canvas
                 context.translate(canvas.width / 2, canvas.height / 2);
@@ -344,12 +345,12 @@
                 context.drawImage(processedImageEl, -canvas.width / 2, -canvas.height / 2);
                 
                 // Download the processed image
-                const downloadLink = document.createElement('a');
-                downloadLink.href = canvas.toDataURL('image/jpeg');
-                downloadLink.download = 'processed_image.jpg';
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
+                const downloadLink = document.createElement('a'); // Create a new anchor element for download
+                downloadLink.href = canvas.toDataURL('image/jpeg'); // Set download link to canvas image data URL
+                downloadLink.download = 'processed_image.jpg'; // Set download filename
+                document.body.appendChild(downloadLink); // Append download link to document body
+                downloadLink.click(); // Simulate click on download link
+                document.body.removeChild(downloadLink); // Remove download link from document body
             }
     
             // Function to handle image processing and download
