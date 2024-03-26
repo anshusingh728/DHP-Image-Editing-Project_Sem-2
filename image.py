@@ -24,7 +24,7 @@ def process_image(image, operations):
         enhancer = ImageEnhance.Color(pil_image)
         pil_image = enhancer.enhance(1.5)  # Adjust saturation factor as needed
     if 'vintage' in operations:
-        # Apply vintage effect (You can add code here to apply the vintage effect)
+            pil_image = cv2.cvtColor(cv2.applyColorMap(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY), cv2.COLORMAP_AUTUMN), cv2.COLOR_BGR2RGB)
 
     # Convert PIL Image back to numpy array for OpenCV compatibility
         image = np.array(pil_image)
